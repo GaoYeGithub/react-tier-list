@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export function useTierState() {
-    return useState([
+    const [tiers, setTiers] = useState([
         { name: 'S', data: [], className: 'bg-rose-500' },
         { name: 'A', data: [], className: 'bg-orange-300' },
         { name: 'B', data: [], className: 'bg-amber-200' },
@@ -32,7 +32,37 @@ export function useTierState() {
                     id: '5',
                     imageUrl: 'https://i.ibb.co/zRzwsCD/image.png',
                 },
+                {
+                    id: '6',
+                    imageUrl: 'https://i.ibb.co/tL7dh5M/java-logo-1.png',
+                },
             ],
         },
     ]);
+
+    function renameTier(oldName: string, newName: string) {
+        setTiers((prevTiers) =>
+            prevTiers.map((tier) =>
+                tier.name === oldName ? { ...tier, name: newName } : tier
+            )
+        );
+    }
+
+    function addImageToTier(tierName: string, imageUrl: string) {
+        setTiers((prevTiers) =>
+            prevTiers.map((tier) =>
+                tier.name === tierName
+                    ? {
+                          ...tier,
+                          data: [
+                              ...tier.data,
+                              { id: `${tier.data.length + 1}`, imageUrl },
+                          ],
+                      }
+                    : tier
+            )
+        );
+    }
+
+    return { tiers, setTiers, renameTier, addImageToTier };
 }
